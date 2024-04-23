@@ -136,11 +136,19 @@ public class Scenarios {
      * Takes one positional argument:
      *  - {@code number: <your integer type>} where {@code number >= 0}
      */
+//    static Map<String, Object> sqrt(String arguments) {
+//        //TODO: Parse arguments and extract values.
+//        int number = 0;
+//        return Map.of("number", number);
+//    }
     static Map<String, Object> sqrt(String arguments) {
-        //TODO: Parse arguments and extract values.
-        int number = 0;
+        int number = Integer.parseInt(arguments.trim());
+        if (number < 0) {
+            throw new IllegalArgumentException("Number must be non-negative.");
+        }
         return Map.of("number", number);
     }
+
 
     /**
      * Takes one positional argument:
@@ -148,11 +156,28 @@ public class Scenarios {
      *     - Note: Not all projects support subcommands, but if yours does you
      *       may want to take advantage of this scenario for that.
      */
+//    static Map<String, Object> calc(String arguments) {
+//        //TODO: Parse arguments and extract values.
+//        String subcommand = "";
+//        return Map.of("subcommand", subcommand);
+//    }
     static Map<String, Object> calc(String arguments) {
-        //TODO: Parse arguments and extract values.
-        String subcommand = "";
-        return Map.of("subcommand", subcommand);
+        // This should handle inputs like "calc add", "calc sub", "calc sqrt"
+        if (arguments == null || arguments.trim().isEmpty()) {
+            // Handling case where no subcommand is provided, e.g., "calc"
+            throw new IllegalArgumentException("No subcommand provided.");
+        }
+
+        String[] parts = arguments.trim().split("\\s+", 2);
+        String subcommand = parts[0];
+
+        // We expect only the subcommand name for the test cases.
+        return switch (subcommand) {
+            case "add", "sub", "sqrt" -> Map.of("subcommand", subcommand);
+            default -> throw new IllegalArgumentException("Unknown subcommand: " + subcommand);
+        };
     }
+
 
     /**
      * Takes one positional argument:
