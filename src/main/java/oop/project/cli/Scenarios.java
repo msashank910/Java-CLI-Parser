@@ -44,18 +44,28 @@ public class Scenarios {
 //    }
     private static Map<String, Object> add(String arguments) {
         String[] parts = arguments.split("\\s+");
-        if (parts.length != 2) {
-            // If there are not exactly two arguments, return null or throw an exception
-            throw new IllegalArgumentException("Incorrect number of arguments for add command.");
+        int left = 0; // Default value for left if not provided
+        int right = 0; // Default value for right if not provided
+
+        if (parts.length > 0) {
+            try {
+                left = Integer.parseInt(parts[0]); // Try parsing the first argument
+            } catch (NumberFormatException e) {
+                throw new IllegalArgumentException("First argument must be an integer.");
+            }
         }
-        try {
-            int left = Integer.parseInt(parts[0]);
-            int right = Integer.parseInt(parts[1]);
-            return Map.of("left", left, "right", right);
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Arguments must be integers.");
+
+        if (parts.length > 1) {
+            try {
+                right = Integer.parseInt(parts[1]); // Try parsing the second argument
+            } catch (NumberFormatException e) {
+                throw new IllegalArgumentException("Second argument must be an integer.");
+            }
         }
+
+        return Map.of("left", left, "right", right); // Return the results with potentially default values
     }
+
 
 
 
