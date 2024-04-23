@@ -14,10 +14,7 @@ public class Scenarios {
      * your needs - use whatever is convenient for your design.
      */
     public static Map<String, Object> parse(String command) {
-        //This assumes commands follow a similar structure to unix commands,
-        //e.g. `command [arguments...]`. If your project uses a different
-        //structure, e.g. Lisp syntax like `(command [arguments...])`, you may
-        //need to adjust this a bit to work as expected.
+
         var split = command.split(" ", 2);
         var base = split[0];
         var arguments = split.length == 2 ? split[1] : "";
@@ -36,12 +33,7 @@ public class Scenarios {
      *  - {@code left: <your integer type>}
      *  - {@code right: <your integer type>}
      */
-//    private static Map<String, Object> add(String arguments) {
-//        //TODO: Parse arguments and extract values.
-//        int left = 0; //or BigInteger, etc.
-//        int right = 0;
-//        return Map.of("left", left, "right", right);
-//    }
+
     private static Map<String, Object> add(String arguments) {
         String[] parts = arguments.split("\\s+");
         if (parts.length != 2) {
@@ -66,12 +58,6 @@ public class Scenarios {
      *       this as a non-optional decimal value using a default of 0.0.
      *  - {@code right: <your decimal type>} (required)
      */
-//    static Map<String, Object> sub(String arguments) {
-//        //TODO: Parse arguments and extract values.
-//        Optional<Double> left = Optional.empty();
-//        double right = 0.0;
-//        return Map.of("left", left, "right", right);
-//    }
     static Map<String, Object> sub(String arguments) {
         Map<String, String> argsMap = parseFlagArguments(arguments);
 
@@ -136,11 +122,6 @@ public class Scenarios {
      * Takes one positional argument:
      *  - {@code number: <your integer type>} where {@code number >= 0}
      */
-//    static Map<String, Object> sqrt(String arguments) {
-//        //TODO: Parse arguments and extract values.
-//        int number = 0;
-//        return Map.of("number", number);
-//    }
     static Map<String, Object> sqrt(String arguments) {
         int number = Integer.parseInt(arguments.trim());
         if (number < 0) {
@@ -156,11 +137,7 @@ public class Scenarios {
      *     - Note: Not all projects support subcommands, but if yours does you
      *       may want to take advantage of this scenario for that.
      */
-//    static Map<String, Object> calc(String arguments) {
-//        //TODO: Parse arguments and extract values.
-//        String subcommand = "";
-//        return Map.of("subcommand", subcommand);
-//    }
+
     static Map<String, Object> calc(String arguments) {
         // This should handle inputs like "calc add", "calc sub", "calc sqrt"
         if (arguments == null || arguments.trim().isEmpty()) {
@@ -187,11 +164,7 @@ public class Scenarios {
      *     - Note: Consider this a type that CANNOT be supported by your library
      *       out of the box and requires a custom type to be defined.
      */
-//    static Map<String, Object> date(String arguments) {
-//        //TODO: Parse arguments and extract values.
-//        LocalDate date = LocalDate.EPOCH;
-//        return Map.of("date", date);
-//    }
+
     static Map<String, Object> date(String arguments) {
         try {
             LocalDate date = LocalDate.parse(arguments.trim());
@@ -214,11 +187,5 @@ public class Scenarios {
         return argsMap;
     }
 
-
-
-    //TODO: Add your own scenarios based on your software design writeup. You
-    //should have a couple from pain points at least, and likely some others
-    //for notable features. This doesn't need to be exhaustive, but this is a
-    //good place to test/showcase your functionality in context.
 
 }
