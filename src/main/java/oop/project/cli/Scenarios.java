@@ -173,7 +173,7 @@ public class Scenarios {
 
         // We expect only the subcommand name for the test cases.
         return switch (subcommand) {
-            case "add", "sub", "sqrt" -> Map.of("subcommand", subcommand);
+            case "add", "sub", "sqrt", "date" -> Map.of("subcommand", subcommand);
             default -> throw new IllegalArgumentException("Unknown subcommand: " + subcommand);
         };
     }
