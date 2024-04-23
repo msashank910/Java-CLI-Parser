@@ -28,7 +28,12 @@ public class ScenariosTests {
                 Arguments.of("Missing Argument", "add 1", null),
                 Arguments.of("Extraneous Argument", "add 1 2 3", null),
                 Arguments.of("Not A Number", "add one two", null),
-                Arguments.of("Not An Integer", "add 1.0 2.0", null)
+                Arguments.of("Not An Integer", "add 1.0 2.0", null),
+
+                //Additional Test Cases
+                Arguments.of("Integer Max", "add 2147483647 1", Map.of("left", 2147483647, "right", 1)),
+                Arguments.of("Integer Min", "add -2147483648 -1", Map.of("left", -2147483648, "right", -1))
+
             );
         }
 
