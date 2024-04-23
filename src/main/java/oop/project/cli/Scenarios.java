@@ -179,6 +179,7 @@ public class Scenarios {
     }
 
 
+
     /**
      * Takes one positional argument:
      *  - {@code date: Date}, a custom type representing a {@code LocalDate}
@@ -186,11 +187,34 @@ public class Scenarios {
      *     - Note: Consider this a type that CANNOT be supported by your library
      *       out of the box and requires a custom type to be defined.
      */
+//    static Map<String, Object> date(String arguments) {
+//        //TODO: Parse arguments and extract values.
+//        LocalDate date = LocalDate.EPOCH;
+//        return Map.of("date", date);
+//    }
     static Map<String, Object> date(String arguments) {
-        //TODO: Parse arguments and extract values.
-        LocalDate date = LocalDate.EPOCH;
-        return Map.of("date", date);
+        try {
+            LocalDate date = LocalDate.parse(arguments.trim());
+            return Map.of("date", date);
+        } catch (DateTimeParseException e) {
+            throw new IllegalArgumentException("Invalid date format. Use yyyy-MM-dd.");
+        }
     }
+
+    private static Map<String, String> parseNamedArguments(String arguments) {
+        Map<String, String> argsMap = new HashMap<>();
+        String[] tokens = arguments.split("\\s+");
+        for (String token : tokens) {
+            String[] parts = token.split("=");
+            if (parts.length != 2) {
+                throw new IllegalArgumentException("Named arguments must be in the form name=value");
+            }
+            argsMap.put(parts[0], parts[1]);
+        }
+        return argsMap;
+    }
+
+
 
     //TODO: Add your own scenarios based on your software design writeup. You
     //should have a couple from pain points at least, and likely some others
