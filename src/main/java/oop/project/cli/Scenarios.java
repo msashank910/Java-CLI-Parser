@@ -85,39 +85,35 @@ public class Scenarios {
     static Map<String, Object> sub(String arguments) {
         Map<String, String> argsMap = parseFlagArguments(arguments);
 
-        // Check required 'right' argument
+        double left = 0.0; // Default value for left
+        double right; // Right is required, no default specified directly here
+
         if (!argsMap.containsKey("right")) {
-            throw new IllegalArgumentException("Argument 'right' is required.");
+            throw new IllegalArgumentException("Argument 'right' is required."); // Right is required
         }
 
-        double right;
         try {
-            right = Double.parseDouble(argsMap.get("right"));
+            right = Double.parseDouble(argsMap.get("right")); // Parse the 'right' argument
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Right argument must be a valid number.");
+            throw new IllegalArgumentException("Right argument must be a valid number."); // Error if non-numeric
         }
 
-        // Start constructing the result map with 'right'
-        Map<String, Object> results = new HashMap<>();
-        results.put("right", right);
-
-        // Handling 'left' argument
         if (argsMap.containsKey("left")) {
             try {
-                double left = Double.parseDouble(argsMap.get("left"));
-                results.put("left", left);
+                left = Double.parseDouble(argsMap.get("left")); // Parse the 'left' argument if it exists
             } catch (NumberFormatException e) {
-                throw new IllegalArgumentException("Left argument must be a valid number.");
+                throw new IllegalArgumentException("Left argument must be a valid number."); // Error if non-numeric
             }
-        } else {
-            results.put("left", Optional.empty());
-        }
+        } // Use default value for 'left' if not specified
 
-        // Remove valid keys to check for extraneous arguments
-        argsMap.remove("right");
+        Map<String, Object> results = new HashMap<>();
+        results.put("left", left);
+        results.put("right", right); // Construct results with 'left' and 'right'
+
+        argsMap.remove("right"); // Clean up the argument map
         argsMap.remove("left");
         if (!argsMap.isEmpty()) {
-            throw new IllegalArgumentException("Extraneous or incorrect arguments provided.");
+            throw new IllegalArgumentException("Extraneous or incorrect arguments provided."); // Handle extra unexpected args
         }
 
         return results;
