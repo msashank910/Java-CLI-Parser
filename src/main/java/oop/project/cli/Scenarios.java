@@ -36,26 +36,17 @@ public class Scenarios {
 
     private static Map<String, Object> add(String arguments) {
         String[] parts = arguments.split("\\s+");
-        int left = 0; // Default value for left if not provided
-        int right = 0; // Default value for right if not provided
-
-        if (parts.length > 0) {
-            try {
-                left = Integer.parseInt(parts[0]); // Try parsing the first argument
-            } catch (NumberFormatException e) {
-                throw new IllegalArgumentException("First argument must be an integer.");
-            }
+        if (parts.length != 2) {
+            // If there are not exactly two arguments, return null or throw an exception
+            throw new IllegalArgumentException("Incorrect number of arguments for add command.");
         }
-
-        if (parts.length > 1) {
-            try {
-                right = Integer.parseInt(parts[1]); // Try parsing the second argument
-            } catch (NumberFormatException e) {
-                throw new IllegalArgumentException("Second argument must be an integer.");
-            }
+        try {
+            int left = Integer.parseInt(parts[0]);
+            int right = Integer.parseInt(parts[1]);
+            return Map.of("left", left, "right", right);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Arguments must be integers.");
         }
-
-        return Map.of("left", left, "right", right); // Return the results with potentially default values
     }
 
 
@@ -71,35 +62,39 @@ public class Scenarios {
     static Map<String, Object> sub(String arguments) {
         Map<String, String> argsMap = parseFlagArguments(arguments);
 
-        double left = 0.0; // Default value for left
-        double right; // Right is required, no default specified directly here
-
+        // Check required 'right' argument
         if (!argsMap.containsKey("right")) {
-            throw new IllegalArgumentException("Argument 'right' is required."); // Right is required
+            throw new IllegalArgumentException("Argument 'right' is required.");
         }
 
+        double right;
         try {
-            right = Double.parseDouble(argsMap.get("right")); // Parse the 'right' argument
+            right = Double.parseDouble(argsMap.get("right"));
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Right argument must be a valid number."); // Error if non-numeric
+            throw new IllegalArgumentException("Right argument must be a valid number.");
         }
 
+        // Start constructing the result map with 'right'
+        Map<String, Object> results = new HashMap<>();
+        results.put("right", right);
+
+        // Handling 'left' argument
         if (argsMap.containsKey("left")) {
             try {
-                left = Double.parseDouble(argsMap.get("left")); // Parse the 'left' argument if it exists
+                double left = Double.parseDouble(argsMap.get("left"));
+                results.put("left", left);
             } catch (NumberFormatException e) {
-                throw new IllegalArgumentException("Left argument must be a valid number."); // Error if non-numeric
+                throw new IllegalArgumentException("Left argument must be a valid number.");
             }
-        } // Use default value for 'left' if not specified
+        } else {
+            results.put("left", Optional.empty());
+        }
 
-        Map<String, Object> results = new HashMap<>();
-        results.put("left", left);
-        results.put("right", right); // Construct results with 'left' and 'right'
-
-        argsMap.remove("right"); // Clean up the argument map
+        // Remove valid keys to check for extraneous arguments
+        argsMap.remove("right");
         argsMap.remove("left");
         if (!argsMap.isEmpty()) {
-            throw new IllegalArgumentException("Extraneous or incorrect arguments provided."); // Handle extra unexpected args
+            throw new IllegalArgumentException("Extraneous or incorrect arguments provided.");
         }
 
         return results;
