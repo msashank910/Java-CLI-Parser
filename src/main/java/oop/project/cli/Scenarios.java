@@ -16,7 +16,7 @@ public class Scenarios {
     public static Map<String, Object> parse(String command) {
         //This assumes commands follow a similar structure to unix commands,
         //e.g. `command [arguments...]`. If your project uses a different
-        //structure, e.g. Lisp syntax like `(command [arguments...])`, you may
+        //structure,e.g. Lisp syntax like `(command [arguments...])`, you may
         //need to adjust this a bit to work as expected.
         var split = command.split(" ", 2);
         var base = split[0];
